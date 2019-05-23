@@ -1,17 +1,19 @@
 import React from 'react'
-
 import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
+
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import Collapse from '@material-ui/core/Collapse'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Typography, Chip } from '@material-ui/core';
-import { movies } from '../ducks';
+import { Typography, Chip } from '@material-ui/core'
 
 const style = theme => ({
   card: {
-    maxWidth: 345
+    maxWidth: 342
   },
   media: {
     height: 513,
@@ -19,30 +21,69 @@ const style = theme => ({
   },
   chip: {
     margin: 10
+  },
+  expanded: {
+    transform: 'rotate(180deg)'
+  },
+  compressed: {
+    transform: 'rotate(0deg)'
+  },
+  overview: {
+    padding: 8
   }
 })
 
-const Movie = ({ movie, actions, classes }) => (
-  <Card className={classes.card}>
-    <CardMedia
-      className={classes.media}
-      title={movie.title}
-      image={movie.image_path}
-    >
-    </CardMedia>
-    <CardContent>
-      <Typography variant="h6" noWrap>
-        {movie.title}
-      </Typography>
-      <Typography variant="subtitle1">
-        Release Date: {movie.release_date}
-      </Typography>
-      {[...movie.genres]
-        .map(genre => (
-          <Chip variant="outlined" label={genre} className={classes.chip}/>
-        ))}
-    </CardContent>
-  </Card>
-)
+const Movie = ({ movie, classes }) => {
+  const [expanded, setExpanded] = React.useState(false)
+
+  function handleExpandClick() {
+    setExpanded(!expanded)
+  }
+
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        className={classes.media}
+        title={movie.title}
+        image={movie.image_path}
+      >
+      </CardMedia>
+      <CardContent>
+        <Typography variant="h6" noWrap>
+          {movie.title}
+        </Typography>
+        <Typography variant="subtitle1">
+          Release Date: {movie.release_date}
+        </Typography>
+        <Grid container row>
+          {[...movie.genres]
+            .map(genre => (
+              <Chip variant="outlined" label={genre} className={classes.chip}/>
+            ))}
+        </Grid>
+        <CardActions>
+          <Grid container justify="flex-end">
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={handleExpandClick}
+            >
+              { expanded ? "Less" : "More" }
+              <ExpandMoreIcon className={expanded ? classes.expanded : classes.compressed}/>
+            </Button>
+          </Grid>
+        </CardActions>
+      </CardContent>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography variant="body2" align="left" paragraph className={classes.overview}>
+            {movie.overview}
+          </Typography>
+        </CardContent>
+      </Collapse>
+    </Card>
+  )
+}
 
 export default withStyles(style)(Movie)

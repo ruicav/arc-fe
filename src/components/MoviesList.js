@@ -7,24 +7,23 @@ import Movie from './Movie'
 
 const style = theme => ({
   root: {
-    maxWidth: 700
+    paddingTop: 24,
   }
 })
 
 const MoviesList = ({ movies, actions, classes }) => (
-  <div>
-    <Grid container spacing={8}
-      alignContent="space-between"
-      alignItems="center"
-      justify="center"
-    >
-      { [...movies].map(movie => (
-          <Grid item>
-            <Movie movie={movie}/>
-          </Grid>
-        )) }
-    </Grid>
-  </div>
+  <Grid container spacing={8}
+    alignContent="space-between"
+    alignItems="flex-start"
+    justify="center"
+    className={classes.root}
+  >
+    { [...movies].map(movie => (
+        <Grid item>
+          <Movie movie={movie}/>
+        </Grid>
+      )) }
+  </Grid>
 )
 
 export default withStyles(style)(MoviesList)
