@@ -1,6 +1,7 @@
 import React from 'react'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import FooContainer from '../containers/FooContainer'
+import MoviesListContainer from '../containers/MoviesListContainer'
+import AppBarContainer from '../containers/AppBarContainer'
 
 const theme = createMuiTheme({})
 
@@ -9,7 +10,8 @@ function App(props) {
   return (
     <div>
       <MuiThemeProvider theme={theme}>
-        <FooContainer />
+        <AppBarContainer />
+        <MoviesListContainer />
       </MuiThemeProvider>
     </div>
   )

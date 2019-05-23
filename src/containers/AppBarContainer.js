@@ -1,14 +1,10 @@
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 
-import FooComponent from '../components/FooComponent'
+import AppBar from '../components/AppBar'
 import { movies } from '../ducks'
 
-const { getMovies } = movies.selectors
-
-const mapStateToProps = state => ({
-  movies: getMovies(state)
-})
+const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(movies.actions, dispatch)
@@ -17,4 +13,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FooComponent)
+)(AppBar)
