@@ -55,12 +55,17 @@ const Movie = ({ movie, classes }) => {
         <Typography variant="subtitle1">
           Release Date: {movie.release_date}
         </Typography>
-        <Grid container row noWrap>
-          <Grid item xs={12} noWrap>
+        <Grid container direction="row">
+          <Grid item xs={12}>
             {[...movie.genres]
               .slice(0, 2)
               .map(genre => (
-                <Chip variant="outlined" label={genre} className={classes.chip}/>
+                <Chip
+                  variant="outlined"
+                  label={genre}
+                  className={classes.chip}
+                  key={`chip${movie.title}${Math.random()*100+1}`}
+                />
             ))}
           </Grid>
         </Grid>

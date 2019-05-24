@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
 
 import MoviesList from '../components/MoviesList'
-import { movies } from '../ducks'
+import { movies, pageControl } from '../ducks'
 import movieApi from '../movieApi'
 
 class MovieListContainer extends React.Component {
@@ -15,15 +15,25 @@ class MovieListContainer extends React.Component {
     return (
       <MoviesList
         movies={this.props.movies}
-        actions={this.props.actions}
-        searching={this.props.searching}
+        pageControl={this.props.pageControl}
+        getNextPage={movieApi.getNextPage}
+        addMovies={this.props.actions.addMovies}
+        updateControl={this.props.actions.updateControl}
       />
     )
   }
   componentWillMount() {
     movieApi.getUpcoming()
       .then(result => {
-        this.props.actions.setMovies({movies: result.data}) 
+        this.props.actions.setMovies({movies: result.data.results}) 
+        this.props.actions.updateControl({
+          control: {
+            isSearching: false,
+            currentPage: result.data.page,
+            totalPages: result.data.total_pages,
+            query: ''
+          }
+        })
       })
   }
 }
@@ -32,11 +42,11 @@ const { getMovies } = movies.selectors
 
 const mapStateToProps = state => ({
   movies: getMovies(state),
-  searching: state.search
+  pageControl: state.pageControl
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(movies.actions, dispatch)
+  actions: bindActionCreators({...movies.actions, ...pageControl.actions}, dispatch)
 })
 
 export default connect(

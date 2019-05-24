@@ -3,12 +3,12 @@ import { bindActionCreators } from "redux"
 
 import AppBar from '../components/AppBar'
 import { movies } from '../ducks'
-import { search } from '../ducks'
+import { pageControl } from '../ducks'
 
 const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({...movies.actions, ...search.actions}, dispatch)
+  actions: bindActionCreators({...movies.actions, ...pageControl.actions}, dispatch)
 })
 
 export default connect(

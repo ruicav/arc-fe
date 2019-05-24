@@ -1,12 +1,12 @@
 import { configureStore, getDefaultMiddleware } from "redux-starter-kit"
 import { combineReducers } from "redux"
-import { movies, search } from "./ducks"
+import { movies, pageControl } from "./ducks"
 
 const preloadedState = {}
 
 const reducer = combineReducers({
   movies: movies.reducer,
-  search: search.reducer
+  pageControl: pageControl.reducer
 })
 
 const middleware = [...getDefaultMiddleware()];

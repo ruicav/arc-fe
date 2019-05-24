@@ -24,13 +24,31 @@ const AppBar = ({ actions, classes }) => {
     const query = event.target.value
     if(query.length > 1) {
       movieApi.searchMovies(query)
-      .then(result => actions.setMovies({movies: result.data}))
-      .then(actions.isSearching({searching: true}))
+      .then(result => {
+        actions.setMovies({movies: result.data.results})
+        actions.updateControl({
+          control: {
+            isSearching: true,
+            currentPage: result.data.page,
+            totalPages: result.data.total_pages,
+            query
+          }
+        })
+      })
     }
     else {
       movieApi.getUpcoming()
-      .then(result => actions.setMovies({movies: result.data}))
-      .then(actions.isSearching({searching: false}))
+      .then(result => {
+        actions.setMovies({movies: result.data.results})
+        actions.updateControl({
+          control: {
+            isSearching: false,
+            currentPage: result.data.page,
+            totalPages: result.data.total_pages,
+            query: ''
+          }
+        })
+      })
     }
   }
 
