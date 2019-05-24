@@ -7,6 +7,8 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import SearchIcon from '@material-ui/icons/Search'
 import { InputAdornment, Grid, FormControl, InputLabel, Input, TextField } from '@material-ui/core';
 
+import movieApi from '../movieApi'
+
 const styles = theme => ({
   appBar: {
     flexGrow: 1,
@@ -19,8 +21,16 @@ const styles = theme => ({
 
 const AppBar = ({ actions, classes }) => {
   function handleSearchChange(event) {
-    if(event.target.value.length > 1) {
-      actions.setQuery({ query: event.target.value })
+    const query = event.target.value
+    if(query.length > 1) {
+      movieApi.searchMovies(query)
+      .then(result => actions.setMovies({movies: result.data}))
+      .then(actions.isSearching({searching: true}))
+    }
+    else {
+      movieApi.getUpcoming()
+      .then(result => actions.setMovies({movies: result.data}))
+      .then(actions.isSearching({searching: false}))
     }
   }
 

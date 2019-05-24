@@ -5,8 +5,7 @@ import { bindActionCreators } from "redux"
 
 import MoviesList from '../components/MoviesList'
 import { movies } from '../ducks'
-
-import axios from 'axios'
+import movieApi from '../movieApi'
 
 class MovieListContainer extends React.Component {
   constructor(props) {
@@ -17,15 +16,14 @@ class MovieListContainer extends React.Component {
       <MoviesList
         movies={this.props.movies}
         actions={this.props.actions}
+        searching={this.props.searching}
       />
     )
   }
   componentWillMount() {
-    axios.get(
-      'http://localhost:9000/movies/upcoming'
-    )
+    movieApi.getUpcoming()
       .then(result => {
-        this.props.actions.setUpcoming({movies: result.data}) 
+        this.props.actions.setMovies({movies: result.data}) 
       })
   }
 }
@@ -33,7 +31,8 @@ class MovieListContainer extends React.Component {
 const { getMovies } = movies.selectors
 
 const mapStateToProps = state => ({
-  movies: getMovies(state)
+  movies: getMovies(state),
+  searching: state.search
 })
 
 const mapDispatchToProps = dispatch => ({
