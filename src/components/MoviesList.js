@@ -11,18 +11,18 @@ const style = theme => ({
   }
 })
 
-const MoviesList = ({ movies, actions, classes }) => (
+const MoviesList = ({ movies, classes }) => (
   <Grid container spacing={8}
     alignContent="space-between"
     alignItems="flex-start"
     justify="center"
     className={classes.root}
   >
-    { [...movies].map(movie => (
+    { movies.length > 0 ? ([...movies].map(movie => (
         <Grid item>
           <Movie movie={movie}/>
         </Grid>
-      )) }
+      ))) : 'Nada' }
   </Grid>
 )
 
