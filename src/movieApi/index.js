@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 
 const getUpcoming = (page) => {
   const params = page ? {page} : {}
@@ -6,6 +7,14 @@ const getUpcoming = (page) => {
     'http://localhost:9000/movies/upcoming',
     {params}
   )
+    .then(result => ({
+      ...result,
+      data: {
+        ...result.data,
+        results: [...result.data.results]
+          .filter(m => moment(m.release_date, 'YYYY-MM-DD').isAfter(moment.now()))
+      }
+    }))
 }
 
 const searchMovies = (title, page) => {
