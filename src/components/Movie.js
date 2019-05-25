@@ -62,6 +62,7 @@ const Movie = ({ movie, classes }) => {
               .map(genre => (
                 <Chip
                   variant="outlined"
+                  color="primary"
                   label={genre}
                   className={classes.chip}
                   key={`chip${movie.title}${Math.random()*100+1}`}

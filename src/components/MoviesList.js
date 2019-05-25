@@ -34,41 +34,59 @@ const loadMoreMovies = ({getNextPage, pageControl, addMovies, updateControl}) =>
     })
 }
 
-const MoviesList = ({ movies, pageControl, getNextPage, addMovies, updateControl, classes }) => (
-  <Grid container spacing={8}
-    alignContent="space-between"
-    alignItems="flex-start"
-    justify="center"
-    className={classes.root}
-  >
-    <Grid item xs={12} className={classes.title}>
-      <Typography align="center" variant="h6">
-        {pageControl.isSearching ? '' : 'Upcoming'}
-      </Typography>
-    </Grid>
-    { movies.length > 0 ? ([...movies].map(movie => (
-        <Grid item key={`item${movie.title}${Math.random()*100+1}`}>
-          <Movie movie={movie}/>
-        </Grid>
-      ))) : (<Typography variant="body1"> No movies to show :( </Typography>)}
-    <Grid container direction="column" justify="center" alignContent="center">
-      <Grid item>
-        <Fab 
-          color="primary"
-          className={classes.fab}
-          disabled={pageControl.currentPage === pageControl.totalPages}
-          onClick={() => loadMoreMovies({getNextPage, pageControl, addMovies, updateControl})}
-        >
-          <AddIcon />
-        </Fab>
-      </Grid>
-      <Grid item>
-        <Typography variant="body2">
-          {`Page ${pageControl.currentPage}/${pageControl.totalPages}`}
-        </Typography>
-      </Grid>
-    </Grid>
-  </Grid>
-)
+class MoviesList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      scrollPosition: window.pageYOffset
+    }
+  }
 
+  componentDidUpdate() {
+    window.scrollTo(0, this.state.scrollPosition)
+  }
+
+  render () {
+    const { movies, pageControl, getNextPage, addMovies, updateControl, classes } = this.props
+    return (
+      <Grid container spacing={8}
+        alignContent="space-between"
+        alignItems="flex-start"
+        justify="center"
+        className={classes.root}
+      >
+        <Grid item xs={12} className={classes.title}>
+          <Typography align="center" variant="h6">
+            {pageControl.isSearching ? '' : 'Upcoming'}
+          </Typography>
+        </Grid>
+        { movies.length > 0 ? ([...movies].map(movie => (
+            <Grid item key={`item${movie.title}${Math.random()*100+1}`}>
+              <Movie movie={movie}/>
+            </Grid>
+          ))) : (<Typography variant="body1"> No movies to show :( </Typography>)}
+        <Grid container direction="column" justify="center" alignContent="center">
+          <Grid item>
+            <Fab 
+              color="primary"
+              className={classes.fab}
+              disabled={pageControl.currentPage === pageControl.totalPages}
+              onClick={() => {
+                this.setState({scrollPosition: window.pageYOffset}) 
+                loadMoreMovies({getNextPage, pageControl, addMovies, updateControl})
+              }}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {`Page ${pageControl.currentPage}/${pageControl.totalPages}`}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+    )
+  }
+}
 export default withStyles(style)(MoviesList)

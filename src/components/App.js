@@ -3,7 +3,13 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import MoviesListContainer from '../containers/MoviesListContainer'
 import AppBarContainer from '../containers/AppBarContainer'
 
-const theme = createMuiTheme({})
+import deepOrange from '@material-ui/core/colors/deepOrange'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: deepOrange
+  }
+})
 
 function App(props) {
   const { classes } = props
