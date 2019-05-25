@@ -28,7 +28,8 @@ const loadMoreMovies = ({getNextPage, pageControl, addMovies, updateControl}) =>
           isSearching: pageControl.isSearching,
           currentPage: result.data.page,
           totalPages: result.data.total_pages,
-          query: pageControl.query
+          query: pageControl.query,
+          isAdding: false
         }
       })
     })
@@ -43,11 +44,20 @@ class MoviesList extends React.Component {
   }
 
   componentDidUpdate() {
-    window.scrollTo(0, this.state.scrollPosition)
+    if(this.props.pageControl.isAdding) {
+      window.scrollTo(0, this.state.scrollPosition)
+    }
   }
 
   render () {
-    const { movies, pageControl, getNextPage, addMovies, updateControl, classes } = this.props
+    const { 
+      movies,
+      pageControl,
+      getNextPage,
+      addMovies,
+      updateControl,
+      classes
+    } = this.props
     return (
       <Grid container spacing={8}
         alignContent="space-between"
@@ -72,7 +82,8 @@ class MoviesList extends React.Component {
               className={classes.fab}
               disabled={pageControl.currentPage === pageControl.totalPages}
               onClick={() => {
-                this.setState({scrollPosition: window.pageYOffset}) 
+                updateControl({ control: { isAdding: true }})
+                this.setState({ scrollPosition: window.pageYOffset }) 
                 loadMoreMovies({getNextPage, pageControl, addMovies, updateControl})
               }}
             >

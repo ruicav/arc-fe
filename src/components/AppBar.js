@@ -25,6 +25,7 @@ const AppBar = ({ actions, classes }) => {
     if(query.length > 1) {
       movieApi.searchMovies(query)
       .then(result => {
+        window.scrollTo(0, 0)
         actions.setMovies({movies: result.data.results})
         actions.updateControl({
           control: {
@@ -39,6 +40,7 @@ const AppBar = ({ actions, classes }) => {
     else {
       movieApi.getUpcoming()
       .then(result => {
+        window.scrollTo(0, 0)
         actions.setMovies({movies: result.data.results})
         actions.updateControl({
           control: {

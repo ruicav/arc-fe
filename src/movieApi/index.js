@@ -1,10 +1,12 @@
 import axios from 'axios'
 import moment from 'moment'
 
+axios.defaults.baseURL = 'https://ancient-waters-72863.herokuapp.com'
+
 const getUpcoming = (page) => {
   const params = page ? {page} : {}
   return axios.get(
-    'http://localhost:9000/movies/upcoming',
+    '/movies/upcoming',
     {params}
   )
     .then(result => ({
@@ -19,7 +21,7 @@ const getUpcoming = (page) => {
 
 const searchMovies = (title, page) => {
   return axios.get(
-    'http://localhost:9000/movies/search',
+    '/movies/search',
     {
       params: { query: title, page }
     }
